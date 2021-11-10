@@ -1,5 +1,6 @@
 name: Build Spack Containers
 on:
+  pull_request: []
   workflow_dispatch: 
     inputs:
       package:
@@ -28,7 +29,7 @@ jobs:
     needs:
       - prepare
     permissions:
-      packages: read
+      packages: write
     strategy:
       fail-fast: false
       matrix:
@@ -36,7 +37,7 @@ jobs:
         container: ${{ fromJson(needs.prepare.outputs.containers) }}
         #arch: ['linux/amd64'] # ,'linux/ppc64le','linux/arm64']
         arch: ['linux/amd64,linux/ppc64le,linux/arm64']
-        package: ["${{ github.event.inputs.package }}"]
+        package: ["zlib"] #["${{ github.event.inputs.package }}"]
 
     name: Build ${{ matrix.package }} ${{ matrix.container[0] }} ${{ matrix.container[1] }}
     steps:
