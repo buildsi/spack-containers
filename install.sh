@@ -24,7 +24,7 @@ if [[ "${compiler}" == "all" ]]; then
     # Run a build for each pkg spec, all versions
     for compiler in $(spack compiler list --flat); do
         printf "spack install --all $pkg $compiler\n"
-        spack install --deprecated --all "$pkg %$compiler"
+        spack install --deprecated --all $pkg %$compiler
     done
 else 
 
@@ -35,5 +35,5 @@ else
 
     # Assume just running for one compiler
     printf "spack install --all $pkg $compiler\n"
-    spack install --deprecated --all "$pkg %$compiler"
+    spack install --deprecated --all $pkg %$compiler
 fi

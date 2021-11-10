@@ -72,7 +72,9 @@ jobs:
           platforms: ${{ matrix.arch }}
           context: .
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ghcr.io/buildsi/${{ env.container }}
+          tags: |
+             ghcr.io/buildsi/${{ env.container }}:latest
+             ghcr.io/buildsi/${{ env.container }}:${{ env.tag }}
           build-args: |
              base=${{ matrix.container[0] }}
              package=${{ matrix.package }}
