@@ -45,9 +45,10 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Set Container Tag
-        run: |          
+        run: |         
           container="pkg-${{ matrix.package }}-${{ matrix.container[2] }}:latest"
           tag=$(date '+%Y-%m-%d')
+          tag="pkg-${{ matrix.package }}-${{ matrix.container[2] }}:${tag}"
           echo "container=${container}" >> $GITHUB_ENV
           echo "tag=${tag}" >> $GITHUB_ENV
 
@@ -73,8 +74,8 @@ jobs:
           context: .
           push: ${{ github.event_name != 'pull_request' }}
           tags: |
-             ghcr.io/buildsi/${{ env.container }}:latest
-             ghcr.io/buildsi/${{ env.container }}:${{ env.tag }}
+             ghcr.io/buildsi/${{ env.container }}
+             ghcr.io/buildsi/${{ env.tag }}
           build-args: |
              base=${{ matrix.container[0] }}
              package=${{ matrix.package }}
