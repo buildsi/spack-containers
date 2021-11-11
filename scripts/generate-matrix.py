@@ -20,8 +20,16 @@ containers = [
     "ghcr.io/buildsi/ubuntu:gcc-10.3.0",
 ]
 
-def main():
 
+def main(pkg):
+
+    # Get versions of package
+    versions = requests.get("https://raw.githubusercontent.com/spack/packages/main/data/packages/%s.json" % pkg)
+    if versions.status_code != 200:
+        sys.exit("Failed to get package versions")
+    versions = versions.json()
+    versions = list(set([x['name'] for x in versions['versions']]))
+ 
     # We will build up a matrix of containers and compilers
     matrix = []
     for container in containers:
@@ -43,10 +51,14 @@ def main():
             name = container.split('/')[-1].replace('spack', '').replace(':', '-').strip('-')
             if "gcc" not in name and "clang" not in name:
                 name = name + "-" + label.replace("@", '-')
-            matrix.append([container, label, name])
+            for version in versions:
+                container_name = name + "-" + version
+                matrix.append([container, label, container_name, version])
     print(matrix)
     print("::set-output name=containers::%s\n" % json.dumps(matrix))
 
 
 if __name__ == "__main__":
-    main()
+    if len(sys.argv) < 2:
+        sys.exit("Please provide the package name as an argument!")
+    main(sys.argv[1])

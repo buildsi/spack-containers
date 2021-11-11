@@ -7,9 +7,10 @@ fi
 
 
 pkg="${1}"
-compiler="${2:-all}"
+version="${2}"
+compiler="${3:-all}"
 
-printf "Installing ${pkg} across versions with ${compiler}\n"
+printf "Installing ${pkg}@${version} across versions with ${compiler}\n"
 
 # Setup spack
 . /opt/spack/share/spack/setup-env.sh
@@ -23,11 +24,11 @@ spack compiler find
 if [[ "${compiler}" == "all" ]]; then
     # Run a build for each pkg spec, all versions
     for compiler in $(spack compiler list --flat); do
-        printf "spack install --all $pkg $compiler\n"
-        spack install --deprecated --all $pkg %$compiler
+        printf "spack install ${pkg}@${version} $compiler\n"
+        spack install ${pkg}@${version} %$compiler
     done
 else 
     # Assume just running for one compiler
-    printf "spack install --all $pkg $compiler\n"
-    spack install --deprecated --all $pkg %$compiler
+    printf "spack install ${pkg}@${version} $compiler\n"
+    spack install ${pkg}@${version} %$compiler
 fi
