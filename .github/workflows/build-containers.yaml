@@ -34,7 +34,7 @@ jobs:
       matrix:
         # Each entry is a container, and then compiler within it, and a tag for the version
         container: ${{ fromJson(needs.prepare.outputs.containers) }}
-        arch: ['linux/amd64,linux/ppc64le,linux/arm64']
+        arch: ['linux/amd64'] # linux/ppc64le,linux/arm64 these take forever
         package: ["${{ github.event.inputs.package }}"]
 
     name: Build ${{ matrix.package }} ${{ matrix.container[0] }} ${{ matrix.container[1] }}
