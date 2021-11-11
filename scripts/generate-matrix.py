@@ -52,7 +52,7 @@ def main(pkg):
             if "gcc" not in name and "clang" not in name:
                 name = name + "-" + label.replace("@", '-')
             for version in versions:
-                container_name = name + "-" + version
+                container_name = version + "-" + name
                 matrix.append([container, label, container_name, version])
     print(matrix)
     print("::set-output name=containers::%s\n" % json.dumps(matrix))
